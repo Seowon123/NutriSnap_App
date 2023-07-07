@@ -1,0 +1,9 @@
+{% if nutrient_list %}
+    <ul>
+    {% for nutrient in nutrient_list %}
+        <li><a href="/nutrisnap/{{ nutrient.id }}/">{{ nutrient.foodName }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>영양정보가 없습니다.</p>
+{% endif %}
