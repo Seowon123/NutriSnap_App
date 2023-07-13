@@ -60,3 +60,10 @@ class Person(models.Model):
     saturatedFattyAcid = models.FloatField()
     transFattyAcid = models.FloatField()
     create_date = models.DateTimeField()
+
+class Profile(models.Model):
+    image = models.ImageField(upload_to='images/')
+    result = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return str(self.id)

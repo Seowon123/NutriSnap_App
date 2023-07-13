@@ -11,6 +11,35 @@
         h2 {font-size:.8em; color:#000; font-weight:bold;}
         .fl {float:left;}
     </style>
+
+</head>
+
+<body>
+    <div ondrop="handleFileDrop(event);" ondragenter="handleDragOver(event);" ondragover="handleDragOver(event);", id="dynamic-images-container">
+        <h2>사진 입력</h2>
+    </div>
+    <div class="fl" ondrop="handleDrop(event);" ondragenter="handleDragOver(event);" ondragover="handleDragOver(event);">
+        <h2>음식 사진을 드래그 해주세요</h2>
+        <img id="dropped-image" style="display: none;" width="300" height="300">
+        <form id="my-form" method="POST" action="{% url 'classify_image' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="image" name="image" style="display: none;">
+            <label for="image" id="image-label">이미지를 드래그 앤 드랍하거나 클릭하여 선택하세요.</label>
+        </form>
+        <form action="{% url 'upload_create' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image"><br>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+{#    <form action="{% url 'upload_create' %}" method="POST" enctype="multipart/form-data">#}
+{#        {% csrf_token %}#}
+{#        내용 <br>#}
+{#        <input type="file" name="image"><br>#}
+{#        <input type="submit" value="Submit" />#}
+{#    </form>#}
+
     <script type="text/javascript">
         function drag(target, food) {
             food.dataTransfer.setData('Text', target.id);
@@ -44,15 +73,32 @@
             event.preventDefault();
         }
 
-    </script>
-</head>
+        function handleDrop(event) {
+            event.preventDefault();
+            var file = event.dataTransfer.files[0];
+            handleImageFile(file);
+        }
 
-<body>
-    <div ondrop="handleFileDrop(event);" ondragenter="handleDragOver(event);" ondragover="handleDragOver(event);", id="dynamic-images-container">
-        <h2>사진 입력</h2>
-    </div>
-    <div class="fl" ondrop="drop(this, event);" ondragenter="return false;" ondragover="return false;">
-        <h2>음식 사진을 드래그 해주세요</h2>
-    </div>
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            handleImageFile(file);
+        }
+
+        function handleImageFile(file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.getElementById('dropped-image');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    </script>
 </body>
 </html>

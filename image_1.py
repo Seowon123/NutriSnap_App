@@ -160,15 +160,20 @@ def imshow(input, title):
 ### 모델을 저장
 ##torch.save(model.state_dict(), 'trained_models/saved_model.pth')
 
+# 저장된 모델을 불러오기
+model = models.resnet34(pretrained=True)
+num_features = model.fc.in_features
+model.fc = nn.Linear(num_features, 3)
 model.load_state_dict(torch.load('trained_models/saved_model.pth'))
 model = model.to(device)
 model.eval()
+
+# 테스트 데이터셋으로 평가
 start_time = time.time()
+running_loss = 0.
+running_corrects = 0
 
 with torch.no_grad():
-    running_loss = 0.
-    running_corrects = 0
-
     for inputs, labels in test_dataloader:
         inputs = inputs.to(device)
         labels = labels.to(device)
@@ -189,11 +194,11 @@ with torch.no_grad():
     print('[Test Phase] Loss: {:.4f} Acc: {:.4f}% Time: {:.4f}s'.format(epoch_loss, epoch_acc, time.time() - start_time))
 
 
+# 새로운 이미지로 테스트
 image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Yangnyeom-chikin_bhcChicken_1.jpg/800px-Yangnyeom-chikin_bhcChicken_1.jpg?20200725055131"
 file_path = "test_image.jpg"
 
 urllib.request.urlretrieve(image_url, file_path)
-
 
 image = Image.open('test_image.jpg')
 image = transforms_test(image).unsqueeze(0).to(device)
@@ -202,6 +207,7 @@ with torch.no_grad():
     outputs = model(image)
     _, preds = torch.max(outputs, 1)
     imshow(image.cpu().data[0], title='result of prospect: ' + class_names[preds[0]])
+
 
 
 
