@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+<html>
+<head>
+    <title>Nutrisnap</title>
+</head>
+<body>
+    <h1>NutriSnap에 오신걸 환영합니다!</h1>
+    <a href="{% url 'nutrisnap:nutrient_check' %}">영양 정보 찾아보기</a>
+    <p><a href="/nutrisnap/info/">개인 맞춤 영양 체크</a>
+    </p>
+</body>
+</html>
+{% endblock %}

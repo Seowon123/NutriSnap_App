@@ -1,0 +1,40 @@
+
+<html>
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>개인 영양 정보 확인</title>
+</head>
+<body>
+    <h2>개인 영양 정보 확인</h2>
+{% if person_detail %}
+    <ul>
+    {% for person in person_detail %}
+        <a><li>이름 : {{ person.name }}</a></li>
+        <a><li>bmi : {{ person.bmi }}</a></li>
+        <a><li>타이로신 : {{ person.tyrosine }}</a></li>
+        <a><li>코엔자임 Q10 : {{ person.CoenzymeQ10 }}</a></li>
+        <a><li>베타인 : {{ person.betaine }}</a></li>
+        <a><li>혈압 : {{ person.BloodPressure }}</a></li>
+        <a><li>혈당 : {{ person.BloodSugar}}</a></li>
+        <a><li>마그네슘 : {{ person.magnesium}}</a></li>
+        <a><li>칼슘 : {{ person.calcium}}</a></li>
+        <a><li>골질량 : {{ person.BoneMass}}</a></li>
+        <a><li>철 : {{ person.iron }}</a></li>
+        <a><li>아연 : {{ person.zinc }}</a></li>
+        <a><li>비타민C : {{ person.vitaminC }}</a></li>
+        <a><li>비타민D : {{ person.vitaminD }}</a></li>
+        <a><li>콜레스테롤 : {{ person.cholesterol }}</a></li>
+        <a><li>중성지방 : {{ person.NeutralFat  }}</a></li>
+        <a><li>비만 : {{ person.obesity  }}</a></li>
+        <a><li>체지방 : {{ person.BodyFat }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>사용자가 없습니다.</p>
+{% endif %}
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!-- nutrisnap/templates/nutrisnap/nutrient_check.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>NutriSnap 영양 정보 확인</title>
+    <style type="text/css">
+        div {width:320px; height:320px; text-align:center; border:1px solid #000; padding:5px; margin:20px;}
+        img {width:75px; height:60px; padding:5px;}
+        h2 {font-size:.8em; color:#000; font-weight:bold;}
+        .fl {float:left;}
+    </style>
+    <script type="text/javascript">
+        function drag(target, food) {
+            food.dataTransfer.setData('Text', target.id);
+        }
+        function drop(target, food) {
+            var id = food.dataTransfer.getData('Text');
+            target.appendChild(document.getElementById(id));
+            food.preventDefault();
+        }
+        function handleFileDrop(event) {
+            event.preventDefault();
+            var files = event.dataTransfer.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.alt = "사진";
+                    img.draggable = true;
+                    img.id = "dynamic-image-" + i; // 고유한 ID 생성
+                    img.ondragstart = function(event) {
+                        drag(this, event);
+                    };
+                    document.getElementById("dynamic-images-container").appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+        function handleDrop(event) {
+            event.preventDefault();
+            var file = event.dataTransfer.files[0];
+            handleImageFile(file);
+        }
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            handleImageFile(file);
+        }
+
+        function handleImageFile(file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.getElementById('dropped-image');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    </script>
+</head>
+
+<body>
+    <div ondrop="handleFileDrop(event);" ondragenter="handleDragOver(event);" ondragover="handleDragOver(event);", id="dynamic-images-container">
+        <h2>사진 입력</h2>
+    </div>
+    <div class="fl" ondrop="handleDrop(event);" ondragenter="handleDragOver(event);" ondragover="handleDragOver(event);">
+        <h2>음식 사진을 드래그 해주세요</h2>
+        <img id="dropped-image" style="display: none;" width="300" height="300">
+        <form id="my-form" method="POST" action="{% url 'classify_image' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="image" name="image" style="display: none;">
+            <label for="image" id="image-label">이미지를 드래그 앤 드랍하거나 클릭하여 선택하세요.</label>
+        </form>
+        <form action="{% url 'upload_create' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image"><br>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+{#    <form action="{% url 'upload_create' %}" method="POST" enctype="multipart/form-data">#}
+{#        {% csrf_token %}#}
+{#        내용 <br>#}
+{#        <input type="file" name="image"><br>#}
+{#        <input type="submit" value="Submit" />#}
+{#    </form>#}
