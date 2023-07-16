@@ -9,9 +9,11 @@
     {% if profiles %}
         <h2>가장 최근 분류된 이미지</h2>
         <img src="{{ profiles.0.image.url }}" alt="Image">
-        <p>분류 결과: {{ profiles.0.title }}</p>
+        <p>분류 결과: {{ profiles.0.title}}</p>
+        <p> 음식 이름: {{ profiles.0.food_name }}</p>
     {% else %}
         <p>분류된 이미지가 없습니다.</p>
     {% endif %}
+    <a href="/nutrisnap/recommend/">추천 결과 확인하기</a>
 </body>
 </html>

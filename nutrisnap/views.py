@@ -27,7 +27,7 @@ def person_list(request):
 def person_detail(request):
     person_detail = Person.objects.order_by('-create_date')
     context = {'person_detail' : person_detail}
-    return render(request, 'nutrisnap/person_detail.html', context)
+    return render(request, 'nutrisnap/person_detail.html' , context)
 
 def menu_list(request):
     return render(request, 'nutrisnap/menu_list.html')
@@ -51,7 +51,7 @@ def classify_image(request):
             profile = Profile.objects.order_by('id').first()
 
             # 이미지 저장하기
-            file_path = 'uploaded_image.jpg'
+            file_path = 'profile.image.url'
             with open(file_path, 'wb') as f:
                 f.write(profile.image.read())
 
@@ -66,6 +66,9 @@ def classify_image(request):
             # 이미지 삭제
             os.remove(file_path)
 
+            #분류한 음식 이름 가져오기 (추가함)
+            #food_name = get_food_name(result)
+
             return render(request, 'nutrisnap/result.html', {'result': result})
         else:
             return HttpResponse('Image not found')
@@ -73,7 +76,6 @@ def classify_image(request):
     return render(request, 'nutrisnap/result.html')
 def upload(request):
     return render(request,'nutrient_check.html')
-
 def upload_create(request):
     form=Profile()
     try:
@@ -90,3 +92,13 @@ def profile(request):
 def result(request):
     profiles = Profile.objects.all().order_by('-id')[:1]
     return render(request, 'nutrisnap/result.html', {'profiles': profiles})
+
+def recommend(request):
+    recommend = Person.objects.order_by('-create_date')
+    context = {'recommend': recommend}
+    return render(request, 'nutrisnap/recommend.html', context)
+
+
+
+
+

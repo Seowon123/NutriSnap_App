@@ -16,6 +16,8 @@ urlpatterns = [
     path('classify_image/', views.classify_image, name='classify_image'),
     path('profile/', views.profile, name='profile'),
     path('result/', views.result, name='result'),
+    path('recommend/', views.recommend, name='recommend'),
+
 ]
 
 if settings.DEBUG:

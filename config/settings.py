@@ -131,5 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 로그인 성공후 이동하는 URL
 LOGIN_REDIRECT_URL = '/nutrisnap'
 
+# 로그아웃시 이동하는 URL
+LOGOUT_REDIRECT_URL = '/nutrisnap'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
